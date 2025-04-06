@@ -1,23 +1,66 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire Utilisateur</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulaire Utilisateur</title>
 </head>
 <body>
-    <h1>Formulaire d'inscription</h1>
-    <form method="post" action="/post.html">
-        <label for="first_name">Prénom :</label>
-        <input type="text" id="first_name" name="first_name" required><br><br>
-        
-        <label for="last_name">Nom :</label>
-        <input type="text" id="last_name" name="last_name" required><br><br>
-        
-        <label for="mail">Email :</label>
-        <input type="email" id="mail" name="mail" required><br><br>
-        
-        <button type="submit" value="post">Envoyer</button>
-    </form>
+  <h1>Formulaire d'inscription</h1>
+
+  <div id="errorMessage" style="color: red;"></div>
+
+  <form id="userForm">
+    <label for="first_name">Prénom :</label>
+    <input type="text" id="first_name" name="first_name" required><br><br>
+    
+    <label for="last_name">Nom :</label>
+    <input type="text" id="last_name" name="last_name" required><br><br>
+    
+    <label for="mail">Email :</label>
+    <input type="email" id="mail" name="mail" required><br><br>
+
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <label for="password2">Confirmer le mot de passe :</label>
+    <input type="password" id="password2" name="password2" required><br><br>
+    
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <script>
+    document.getElementById('userForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const first_name = document.getElementById('first_name').value;
+      const last_name = document.getElementById('last_name').value;
+      const mail = document.getElementById('mail').value;
+      const password = document.getElementById('password').value;
+      const password2 = document.getElementById('password2').value;
+      const errorDiv = document.getElementById('errorMessage');
+
+      if (password !== password2) {
+        errorDiv.innerText = 'Les mots de passe ne correspondent pas.';
+        return;
+      }
+
+      const response = await fetch('/post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ first_name, last_name, mail, password })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        window.location.href = '/success.html'; // Redirection si tout va bien ✅
+      } else {
+        errorDiv.innerText = result.message || 'Erreur lors de l’envoi du formulaire.';
+      }
+    });
+  </script>
 </body>
 </html>
