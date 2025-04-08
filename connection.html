@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Inscription réussie</title>
+  <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+  <h1>Connexion</h1>
+  <div id="errorMessage" style="color: red;"></div>
+  <form id="loginForm">
+    <label for="mail">Email :</label>
+    <input type="email" id="mail" name="mail" required><br><br>
+
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <button type="submit">Envoyer</button>
+  </form>
+  <a href="/registration.html">S'inscrire</a>
+  <p id="feedback"></p>
+
+
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const mail = document.getElementById('mail').value;
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('errorMessage');
+
+
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mail, password })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        window.location.href = '/page.html';
+      } else {
+        errorDiv.innerText = result.message || 'Erreur de mail ou mot de pass';
+      }
+    });
+  </script>
+</body>
+</html>

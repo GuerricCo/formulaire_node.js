@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Formulaire Utilisateur</title>
+  <link href="style.css" rel="stylesheet" />
 </head>
 <body>
   <h1>Formulaire d'inscription</h1>
@@ -28,6 +29,7 @@
     
     <button type="submit">Envoyer</button>
   </form>
+  <p>Déjà inscrit?<a href="/connection.html">Ici</a></p>
 
   <script>
     document.getElementById('userForm').addEventListener('submit', async function (event) {
@@ -56,7 +58,7 @@
       const result = await response.json();
 
       if (response.ok) {
-        window.location.href = '/success.html'; // Redirection si tout va bien ✅
+        window.location.href = '/connection.html';
       } else {
         errorDiv.innerText = result.message || 'Erreur lors de l’envoi du formulaire.';
       }
